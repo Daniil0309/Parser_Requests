@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from googletrans import Translator
 import requests
 
 def get_english_word():
@@ -22,6 +23,10 @@ def world_game():
         word_dict = get_english_word()
         word = word_dict.get('english_words')
         word_definition = word_dict.get('word_definition')
+
+        translator = Translator()
+        word = translator.translate(word, dest='ru').text
+        word_definition = translator.translate(word_definition, dest='ru').text
 
         print(f"Значение слова - {word_definition}")
         user = input('Ваш ответ - ')
