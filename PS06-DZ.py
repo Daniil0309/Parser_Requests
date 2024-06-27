@@ -11,15 +11,15 @@ driver.get(url)
 
 time.sleep(5)
 
-product = driver.find_elements(By.CLASS_NAME, '_Ud0k')
+product = driver.find_elements(By.CLASS_NAME, 'lsooF')
 
 parsed_data = []
 
 for item in product:
     try:
-        title = item.find_element(By.CSS_SELECTOR, 'span.name').text
-        price = item.find_element(By.CSS_SELECTOR, 'span.ui-LD-ZU KIkOH').text
-        link = item.find_element(By.CSS_SELECTOR, 'a.ui-GPFV8 qUioe').get_attribute('href')
+        title = item.find_element(By.CSS_SELECTOR, 'span.ui-GPFV8').text
+        price = item.find_element(By.CSS_SELECTOR, 'span.ui-LD-ZU').text
+        link = item.find_element(By.CSS_SELECTOR, 'a.ui-GPFV8').get_attribute('href')
     except:
         print("Произошла ошибка парсинга")
         continue

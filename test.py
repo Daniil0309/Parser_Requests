@@ -1,33 +1,40 @@
+import csv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import csv
+#from selenium.webdriver.chrome.service import Servicefrom webdriver_manager.chrome import ChromeDriverManager
 
+# Настраиваем веб-драйвер
+url = 'https://www.divan.ru/krasnodar/category/svet'
 driver = webdriver.Firefox()
 
-url = 'https://www.divan.ru/krasnodar/category/svet'
+# Открываем страницу
 driver.get(url)
 
-# Ожидание загрузки элементов
-wait = WebDriverWait(driver, 10)
-product = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, 'LlPhw')))
+# Ищем все карточки товаров
+cards = driver.find_elements(By.CLASS_NAME, "lsooF")
 
-parsed_data = []
-
-for item in product:
+data = []
+for card in cards:
     try:
-        title = item.find_element(By.CSS_SELECTOR, 'span.ui-GPFV8.qUioe').text
-        price = item.find_element(By.CSS_SELECTOR, 'span.ui-LD-ZU.KIkOH').text
-        link = item.find_element(By.CSS_SELECTOR, 'a.ui-GPFV8.qUioe').get_attribute('href')
-        parsed_data.append([title, price, link])
-    except Exception as e:
-        print(f"Произошла ошибка парсинга: {e}")
-        continue
+        name = card.find_element(By.CLASS_NAME, "ui-GPFV8").text
+    except:
+        name = "N/A"
+    try:
+        price = card.find_element(By.CLASS_NAME, "ui-LD-ZU").text
+    except:
+        price = "N/A"
+    try:
+        link = card.find_element(By.TAG_NAME, "a").get_attribute("href")
+    except:
+        link = "N/A"
 
-driver.quit()
+    data.append([name, price, link])
 
-with open('divan.csv', 'w', newline='', encoding='utf-8') as file:
+# Сохраняем данные в CSV файл
+with open('products.csv', mode='w', newline='', encoding='utf-8') as file:
     writer = csv.writer(file)
-    writer.writerow(['Название', 'Цена', 'Ссылка'])
-    writer.writerows(parsed_data)
+    writer.writerow(["Название", "Цена", "Ссылка"])
+    writer.writerows(data)
+
+# Закрываем драйвер
+driver.quit()
