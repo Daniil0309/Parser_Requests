@@ -1,9 +1,7 @@
 import csv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-#from selenium.webdriver.chrome.service import Servicefrom webdriver_manager.chrome import ChromeDriverManager
 
-# Настраиваем веб-драйвер
 url = 'https://www.divan.ru/krasnodar/category/svet'
 driver = webdriver.Firefox()
 
